@@ -1,14 +1,21 @@
-local hPressed = false
+local pressed = false
+local prevKeyCode = null
 
 function debouncingKeypress(e)
-    -- if e:getKeyCode() ~= 4 then return false end
-    if hPressed then
-        print("INPUT Key !!")
+    if e:getKeyCode() == prevKeyCode then
+        print("prev Key !! "..prevKeyCode)
+        -- return true
+    end
+
+    prevKeyCode = e:getKeyCode()
+
+    if pressed then
+        print("blocked Key !! "..prevKeyCode)
         return true
     else
-        hPressed = true
-        hs.timer.doAfter(0.01, function() hPressed = false end)
-        print("blocked Key !!")
+        pressed = true
+        hs.timer.doAfter(0.01, function() pressed = false end)
+        print("INPUT Key !! "..prevKeyCode)
         return false
     end
 end
