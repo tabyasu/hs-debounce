@@ -1,23 +1,20 @@
-local pressed = false
 local prevKeyCode = null
+local prevTime = os.clock()
+local now = null
 
 function debouncingKeypress(e)
+    now = os.clock()
     if e:getKeyCode() == prevKeyCode then
         print("prev Key !! "..prevKeyCode)
-        -- return true
+        if (now - prevTime) <= 0.05 then
+            print("time !! "..now - prevTime)
+            print("blocked Key !! "..prevKeyCode)
+            return true
+        end
     end
 
     prevKeyCode = e:getKeyCode()
-
-    if pressed then
-        print("blocked Key !! "..prevKeyCode)
-        return true
-    else
-        pressed = true
-        hs.timer.doAfter(0.01, function() pressed = false end)
-        print("INPUT Key !! "..prevKeyCode)
-        return false
-    end
+    prevTime = now
 end
 
 hs.eventtap.new(
